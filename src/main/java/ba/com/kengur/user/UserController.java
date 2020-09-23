@@ -3,7 +3,6 @@ package ba.com.kengur.user;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,17 +15,20 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import ba.com.kengur.error.BookNotFoundException;
+import lombok.AllArgsConstructor;
 
 @RestController
+@AllArgsConstructor
 public class UserController {
 
-    @Autowired
     private UserRepository repository;
+
+    private UserMapper userMapper;
 
     // Find
     @GetMapping("/users")
-    List<UserEntity> findAll() {
-        return repository.findAll();
+    List<User> findAll() {
+        return userMapper.entitestoDtos(repository.findAll());
     }
 
     // Save
