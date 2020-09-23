@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import ba.com.kengur.error.BookNotFoundException;
+import ba.com.kengur.error.EntityNotFound;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -42,7 +42,7 @@ public class UserController {
     // Find
     @GetMapping("/users/{id}")
     UserEntity findOne(@PathVariable Long id) {
-        return repository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
+        return repository.findById(id).orElseThrow(() -> new EntityNotFound(id));
     }
 
     // Save or update
