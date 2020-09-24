@@ -1,6 +1,7 @@
 package ba.com.kengur.article;
 
 import java.security.Principal;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ba.com.kengur.error.EntityNotFound;
+import ba.com.kengur.image.Image;
+import ba.com.kengur.image.ImageController;
 import ba.com.kengur.user.UserEntity;
 import ba.com.kengur.user.UserRepository;
 import lombok.AllArgsConstructor;
@@ -35,18 +38,26 @@ public class ArticleController {
 
     private UserRepository userRepository;
 
+    private ImageController imageController;
+
     @GetMapping
     List<Article> findAll() {
         return articleMapper.entitestoDtos(repository.findAll());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    ArticleEntity createNewArticle(@ModelAttribute(value = "article") Article newArticle, final Principal principal,
-            final HttpServletRequest request, final HttpServletResponse response) {
+    ArticleEntity createNewArticle(@ModelAttribute(value = "article") ArticleUploadRequest newArticle, final Principal principal,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         UserEntity user = userRepository.findByUsername(principal.getName());
         newArticle.setUserId(user.getId());
         newArticle.setContentBit(newArticle.getContent().substring(0, 50));
-        return repository.save(articleMapper.dtoToEntity(newArticle));
+        ArticleEntity art = repository.save(articleMapper.dtoToEntity(newArticle));
+        Image image = new Image();
+        image.setArticleId(art.getId());
+        image.setImageData(Base64.getEncoder().encodeToString(newArticle.getImageData().getBytes()));
+        image.setTitle(art.getTitle());
+        imageController.createNewImage(image);
+        return art;
     }
 
     // Find

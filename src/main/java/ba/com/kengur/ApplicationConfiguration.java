@@ -3,6 +3,7 @@ package ba.com.kengur;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -11,6 +12,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
 @SpringBootApplication(exclude = { LiquibaseAutoConfiguration.class })
+@EnableConfigurationProperties(StorageProperties.class)
 public class ApplicationConfiguration {
 
     @Value("${spring.datasource.url}")

@@ -2,6 +2,7 @@ package ba.com.kengur.image;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -43,13 +44,13 @@ public class ImageController {
 
     @SuppressWarnings("unchecked")
     @PostMapping(consumes = MediaType.APPLICATION_JSON)
-    Image createNewImage(@RequestBody Image newImage) throws IOException {
+    public Image createNewImage(@RequestBody Image newImage) throws IOException {
         File tempImage = new File("C:\\Kengur\\temp.jpg");
         FileUtils.writeByteArrayToFile(tempImage, Base64.getDecoder().decode(newImage.getImageData()));
-        Map<String, String> params = ObjectUtils.asMap("public_id", "kengur/" + newImage.getTitle(), "overwrite", true, "notification_url",
-                "https://mysite/notify_endpoint", "resource_type", "image");
-        Map uploadResult = cloudinary.uploader().upload(tempImage, params);
-        newImage.setImageLocation((String) uploadResult.get("url"));
+        Map<String, String> params = ObjectUtils.asMap("public_id", "kengur/" + newImage.getTitle() + LocalDateTime.now().toString(),
+                "overwrite", true, "resource_type", "image");
+        Map<String, String> uploadResult = cloudinary.uploader().upload(tempImage, params);
+        newImage.setImageLocation(uploadResult.get("url"));
         return imageMapper.entitytoDto(repository.save(imageMapper.dtoToEntity(newImage)));
     }
 
