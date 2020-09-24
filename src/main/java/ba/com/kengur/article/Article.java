@@ -1,6 +1,7 @@
 package ba.com.kengur.article;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Data;
 
@@ -14,4 +15,5 @@ public class Article implements Serializable {
     private String contentBit;
     private String content;
     private Long userId;
+    private List<String> images;
 }

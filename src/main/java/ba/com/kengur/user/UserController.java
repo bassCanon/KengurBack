@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -25,6 +26,8 @@ public class UserController {
 
     private UserMapper userMapper;
 
+    private PasswordEncoder passEncoder;
+
     // Find
     @GetMapping("/users")
     List<User> findAll() {
@@ -35,8 +38,10 @@ public class UserController {
     @PostMapping("/users")
     // return 201 instead of 200
     @ResponseStatus(HttpStatus.CREATED)
-    UserEntity createNewUser(@RequestBody UserEntity newUser) {
-        return repository.save(newUser);
+    UserEntity createNewUser(@RequestBody User newUser) {
+        UserEntity userEnt = userMapper.dtoToEntity(newUser);
+        userEnt.setPassword(passEncoder.encode(newUser.getPassword()));
+        return repository.save(userEnt);
     }
 
     // Find

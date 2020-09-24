@@ -3,10 +3,13 @@ package ba.com.kengur;
 import java.security.Principal;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import ba.com.kengur.article.Article;
+
 @Controller
-public class LoginController {
+public class UserCommController {
 
     @GetMapping("/")
     public String home1() {
@@ -26,6 +29,12 @@ public class LoginController {
     @GetMapping("/user")
     public String user() {
         return "/user";
+    }
+
+    @GetMapping("/create-article")
+    public String createArticle(Model model) {
+        model.addAttribute("article", new Article());
+        return "/create-article";
     }
 
     @GetMapping("/about")

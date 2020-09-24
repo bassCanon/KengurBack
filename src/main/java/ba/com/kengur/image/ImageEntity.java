@@ -29,8 +29,10 @@ public class ImageEntity {
     private Long id;
 
     @Lob
-    @Column(name = "image_data")
-    private byte[] imageData;
+    @Column(name = "image_location")
+    private String imageLocation;
+
+    private String title;
 
     // bi-directional many-to-one association to ArticleEntity
     @ManyToOne

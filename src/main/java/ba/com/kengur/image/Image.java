@@ -7,9 +7,11 @@ import lombok.Data;
 @Data
 public class Image implements Serializable {
 
-    private static final long serialVersionUID = -349756570482477939L;
+    private static final long serialVersionUID = 1L;
 
     private Long id;
-    private byte[] imageData;
+    private String imageLocation;
     private Long articleId;
+    private String title;
+    private String imageData;
 }

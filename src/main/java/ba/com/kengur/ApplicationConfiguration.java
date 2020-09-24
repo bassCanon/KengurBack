@@ -5,10 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-@EnableWebMvc
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+
 @SpringBootApplication(exclude = { LiquibaseAutoConfiguration.class })
 public class ApplicationConfiguration {
 
@@ -37,6 +38,13 @@ public class ApplicationConfiguration {
         resolver.setPrefix("/static/templates/");
         resolver.setSuffix(".ftl");
         return resolver;
+    }
+
+    @Bean
+    public Cloudinary cloudinary() {
+        Cloudinary cloudinary = new Cloudinary(
+                ObjectUtils.asMap("cloud_name", "dyqu5zn36", "api_key", "251813721735856", "api_secret", "MtZ5BwjT7mm0wpufCme4BoJVgeY"));
+        return cloudinary;
     }
 
 }

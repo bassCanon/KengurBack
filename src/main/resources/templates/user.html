@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<div th:replace="fragments/header :: header-css"/>
-		<div th:replace="fragments/header :: header-css"/>
+        <div th:replace="fragments/header :: header-css"/>
+        <title>Dashboard</title>
 </head>
 <body>
 
@@ -11,9 +12,11 @@
 <div class="container">
 
     <div class="starter-template">
-        <h1>User page (Spring Security protected)</h1>
+        <h1>Kontrolna tabla</h1>
 
-        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+        <h2 th:inline="text">Dobar dan,  [[${#httpServletRequest.remoteUser}]]!</h2>
+        <div>Trenutno stanje stranice:</div>
+        <br>
         <form th:action="@{/logout}" method="post">
             <input type="submit" value="Sign Out"/>
         </form>
