@@ -19,18 +19,21 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     DataSource dataSource;
 
+    @Autowired
+    MyAccessDeniedHandler accessDeniedHandler;
+
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource).usersByUsernameQuery("select username,password from users where username=?")
-                .passwordEncoder(passwordEncoder());
+        auth.jdbcAuthentication().dataSource(dataSource);
+
     }
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN").antMatchers("/anonymous*").anonymous()
-                .antMatchers("/login*").permitAll().anyRequest().authenticated().and().formLogin().loginPage("/login.html")
-                .loginProcessingUrl("/perform_login").defaultSuccessUrl("/homepage.html", true).failureUrl("/login.html?error=true").and()
-                .logout().logoutUrl("/perform_logout").deleteCookies("JSESSIONID").logoutSuccessUrl("/logout");
+        http.csrf().disable().authorizeRequests().antMatchers("/", "/home", "/about").permitAll().antMatchers("/admin/**")
+                .hasAnyRole("ADMIN").antMatchers("/user/**").hasAnyRole("USER").anyRequest().authenticated().and().formLogin()
+                .loginPage("/login").permitAll().and().logout().permitAll().and().exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler);
     }
 
     @Bean

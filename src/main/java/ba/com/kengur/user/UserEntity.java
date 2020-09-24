@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "user", schema = "public")
+@Table(name = "users", schema = "public")
 @NamedQuery(name = "UserEntity.findAll", query = "SELECT r FROM UserEntity r")
 @Getter
 @Setter
@@ -34,6 +34,8 @@ public class UserEntity {
     private String password;
 
     private String username;
+
+    private Boolean enabled;
 
     @Lob
     private byte[] profilePic;

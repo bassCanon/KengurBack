@@ -35,7 +35,7 @@ public class ApplicationConfiguration {
     public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/static/templates/");
-        resolver.setSuffix(".html");
+        resolver.setSuffix(".ftl");
         return resolver;
     }
 
