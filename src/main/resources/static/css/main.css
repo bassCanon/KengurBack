@@ -13,3 +13,10 @@ h1{
 h2{
 	color:#FF0000;
 }
+
+.options input{
+    margin:0;padding:0;
+    -webkit-appearance:none;
+       -moz-appearance:none;
+            appearance:none;
+}

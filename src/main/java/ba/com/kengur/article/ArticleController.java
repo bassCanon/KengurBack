@@ -1,5 +1,6 @@
 package ba.com.kengur.article;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ba.com.kengur.error.EntityNotFound;
@@ -27,6 +27,7 @@ import ba.com.kengur.image.Image;
 import ba.com.kengur.image.ImageController;
 import ba.com.kengur.user.UserEntity;
 import ba.com.kengur.user.UserRepository;
+import ba.com.kengur.util.ResponseConverter;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -80,14 +81,24 @@ public class ArticleController {
     }
 
     // Save or update
-    @PutMapping("link")
-    String linkImagesToArticle(@RequestParam Long articleId, @RequestParam List<Long> imageIds) {
+    @PostMapping(value = "link", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    String linkImagesToArticle(final Principal principal, final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException {
+        List<Image> selectedImages = new ArrayList<>();
+        String[] s = request.getParameterValues("selectedImages");
+        String[] a = request.getParameterValues("articleId");
+        for (int i = 0; i < s.length; i++) {
+            String json = ResponseConverter
+                    .convertToJson(s[i].replace("Image(", "").replace(")", "\"").replace(", ", "\"").replace("=", "=\""));
+            Image image = ResponseConverter.readValue(json, Image.class);
+            selectedImages.add(image);
+        }
         List<ArticleImageEntity> ents = new ArrayList<>();
 
-        for (Long imageId : imageIds) {
+        for (Image image : selectedImages) {
             ArticleImage artImg = new ArticleImage();
-            artImg.setArticleId(articleId);
-            artImg.setImageId(imageId);
+            artImg.setArticleId(Long.parseLong(a[0]));
+            artImg.setImageId(image.getId());
             ents.add(articleImageMapper.dtoToEntity(artImg));
         }
 
@@ -106,6 +117,10 @@ public class ArticleController {
     @DeleteMapping("{id}")
     void deleteBook(@PathVariable Long id) {
         repository.deleteById(id);
+    }
+
+    public List<Article> getAll() {
+        return articleMapper.entitestoDtos(repository.findAll());
     }
 
 }

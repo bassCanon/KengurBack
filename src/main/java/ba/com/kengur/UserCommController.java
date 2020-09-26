@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ba.com.kengur.article.Article;
+import ba.com.kengur.article.ArticleController;
 import ba.com.kengur.article.ArticleUploadRequest;
 import ba.com.kengur.image.Image;
 import ba.com.kengur.image.ImageController;
@@ -27,6 +29,9 @@ public class UserCommController {
 
     @Autowired
     private ImageController imageController;
+
+    @Autowired
+    private ArticleController articleController;
 
     @Autowired
     public UserCommController(StorageService storageService) {
@@ -64,14 +69,32 @@ public class UserCommController {
         return "/upload";
     }
 
-    @GetMapping("/link-images-articles")
+    @GetMapping("/article/link")
     public String linkImagesArticles(Model model) {
         ImageLinkRequest request = new ImageLinkRequest();
         List<Image> images = imageController.getAll();
+        List<Article> articles = articleController.getAll();
         imageController.cleanThumbUrl(images);
         request.setImages(images);
+        request.setArticles(articles);
         model.addAttribute("link", request);
         return "/link-images-articles";
+    }
+
+    @GetMapping("/check-images")
+    public String checkImages(Model model) {
+        ImageLinkRequest request = new ImageLinkRequest();
+
+        List<Image> images = imageController.getAll();
+        List<Article> articles = articleController.getAll();
+
+        imageController.cleanThumbUrl(images);
+
+        request.setImages(images);
+        request.setArticles(articles);
+
+        model.addAttribute("link", request);
+        return "/check-images";
     }
 
     @PostMapping("/upload")
