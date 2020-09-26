@@ -2,33 +2,31 @@
 	<head>
 		<div th:replace="fragments/header :: header-css" />
 		<div th:replace="fragments/header :: header-css" />
-		<title>Dashboard</title>
+		<title>Snimi Slike</title>
 	</head>
 
 <body>
 	<body>
+		<div class="container">
+		<div class="starter-template">
+			<div>
+				<form method="POST" enctype="multipart/form-data" action="/upload">
+					<table>
+						<tr><td>File to upload:</td><td><input type="file" name="files" multiple /></td></tr>
+						<tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+					</table>
+				</form>
+			</div>
 
-	<div th:if="${message}">
-		<h2 th:text="${message}"/>
+			<div>
+				<ul>
+					<li th:each="file : ${files}">
+						<a th:href="${file}" th:text="${file}" />
+					</li>
+				</ul>
+			</div>
 	</div>
-
-	<div>
-		<form method="POST" enctype="multipart/form-data" action="/upload">
-			<table>
-				<tr><td>File to upload:</td><td><input type="file" name="files" multiple /></td></tr>
-				<tr><td></td><td><input type="submit" value="Upload" /></td></tr>
-			</table>
-		</form>
 	</div>
-
-	<div>
-		<ul>
-			<li th:each="file : ${files}">
-				<a th:href="${file}" th:text="${file}" />
-			</li>
-		</ul>
-	</div>
-
 </body>
 </body>
 

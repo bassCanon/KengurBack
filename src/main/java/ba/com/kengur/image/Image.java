@@ -14,4 +14,5 @@ public class Image implements Serializable {
     private Long articleId;
     private String title;
     private String imageData;
+    private String thumbUrl;
 }

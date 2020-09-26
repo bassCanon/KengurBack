@@ -1,0 +1,24 @@
+<html>
+
+<head>
+	<title>Add Images</title>
+	
+		<div th:replace="fragments/header :: header-css" />
+		<div th:replace="fragments/header :: header-css" />
+</head>
+
+<body>
+		<div class="container">
+		<div class="starter-template">
+		<form method="POST">
+            <tr align="left" th:each="image : ${link.getImages()}">
+				<input type="radio"  th:name="${image.id}"
+                       th:value="${image.id}" name="options" th:id="${image.id}" autocomplete="off" checked><img th:src="${image.thumbUrl}">
+            </tr>
+    		<input type="submit" value="Link">
+		</form>
+	</div>
+	</div>
+</body>
+
+</html>

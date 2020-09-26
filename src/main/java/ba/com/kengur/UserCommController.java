@@ -3,6 +3,7 @@ package ba.com.kengur;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Base64;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ba.com.kengur.article.ArticleUploadRequest;
 import ba.com.kengur.image.Image;
 import ba.com.kengur.image.ImageController;
+import ba.com.kengur.image.ImageLinkRequest;
 import ba.com.kengur.image.StorageService;
 
 @Controller
@@ -62,6 +64,16 @@ public class UserCommController {
         return "/upload";
     }
 
+    @GetMapping("/link-images-articles")
+    public String linkImagesArticles(Model model) {
+        ImageLinkRequest request = new ImageLinkRequest();
+        List<Image> images = imageController.getAll();
+        imageController.cleanThumbUrl(images);
+        request.setImages(images);
+        model.addAttribute("link", request);
+        return "/link-images-articles";
+    }
+
     @PostMapping("/upload")
     public String handleFileUpload(@RequestParam("files") MultipartFile[] files, RedirectAttributes redirectAttributes) throws IOException {
         for (MultipartFile file : files) {
@@ -73,6 +85,7 @@ public class UserCommController {
             image.setTitle(file.getOriginalFilename());
             imageController.createNewImage(image);
         }
+        storageService.deleteAll();
         return "redirect:/";
     }
 
@@ -95,12 +108,5 @@ public class UserCommController {
     public String retrievePrincipal(Principal principal) {
         return "home";
     }
-
-    // @GetMapping("/home")
-    // public ModelAndView tryLogin(final Principal principal) {
-    // HashMap<String, Object> model = new HashMap<>();
-    // model.put("username", principal.getName());
-    // return new ModelAndView("home", model);
-    // }
 
 }

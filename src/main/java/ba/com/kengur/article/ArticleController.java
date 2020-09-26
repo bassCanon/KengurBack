@@ -1,6 +1,7 @@
 package ba.com.kengur.article;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ba.com.kengur.error.EntityNotFound;
@@ -39,6 +41,10 @@ public class ArticleController {
     private UserRepository userRepository;
 
     private ImageController imageController;
+
+    private ArticleImageMapper articleImageMapper;
+
+    private ArticleImageRepository articleImageRespository;
 
     @GetMapping
     List<Article> findAll() {
@@ -70,6 +76,23 @@ public class ArticleController {
     @PutMapping("{id}")
     Article saveOrUpdate(@RequestBody ArticleEntity newArticle, @PathVariable Long id) {
         return articleMapper.entitytoDto(newArticle);
+
+    }
+
+    // Save or update
+    @PutMapping("link")
+    String linkImagesToArticle(@RequestParam Long articleId, @RequestParam List<Long> imageIds) {
+        List<ArticleImageEntity> ents = new ArrayList<>();
+
+        for (Long imageId : imageIds) {
+            ArticleImage artImg = new ArticleImage();
+            artImg.setArticleId(articleId);
+            artImg.setImageId(imageId);
+            ents.add(articleImageMapper.dtoToEntity(artImg));
+        }
+
+        articleImageRespository.saveAll(ents);
+        return "Linked";
 
     }
 

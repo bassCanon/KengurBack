@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
 
 import ba.com.kengur.error.EntityNotFound;
@@ -51,6 +52,9 @@ public class ImageController {
                 "overwrite", true, "resource_type", "image");
         Map<String, String> uploadResult = cloudinary.uploader().upload(tempImage, params);
         newImage.setImageLocation(uploadResult.get("url"));
+        String url = cloudinary.url().transformation(new Transformation().radius(20).width(150).height(150).crop("thumb")).secure(false)
+                .generate(uploadResult.get("public_id"));
+        newImage.setThumbUrl(url);
         return imageMapper.entitytoDto(repository.save(imageMapper.dtoToEntity(newImage)));
     }
 
@@ -74,6 +78,19 @@ public class ImageController {
     @DeleteMapping("{id}")
     void deleteBook(@PathVariable Long id) {
         repository.deleteById(id);
+    }
+
+    public List<Image> getAll() {
+        List<Image> images = imageMapper.entitestoDtos(repository.findAll());
+        return images;
+    }
+
+    public void cleanThumbUrl(List<Image> images) {
+        for (Image image : images) {
+            // image.setThumbUrl(image.getThumbUrl().replace("img src=",
+            // "").replace("<", "").replace("/>", "").replace("'", ""));
+        }
+
     }
 
 }

@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -25,9 +24,11 @@ public class ImageEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "IMAGE_SEQ_GEN")
     private Long id;
 
-    @Lob
     @Column(name = "image_location")
     private String imageLocation;
+
+    @Column(name = "thumb_url")
+    private String thumbUrl;
 
     private String title;
 
