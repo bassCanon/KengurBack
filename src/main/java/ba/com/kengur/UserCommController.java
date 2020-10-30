@@ -45,28 +45,28 @@ public class UserCommController {
 
     @GetMapping("/home")
     public String home() {
-        return "/home";
+        return "home";
     }
 
     @GetMapping("/admin")
     public String admin() {
-        return "/admin";
+        return "admin";
     }
 
     @GetMapping("/user")
     public String user() {
-        return "/user";
+        return "user";
     }
 
     @GetMapping("/create-article")
     public String createArticle(Model model) {
         model.addAttribute("article", new ArticleUploadRequest());
-        return "/create-article";
+        return "create-article";
     }
 
     @GetMapping("/upload")
     public String upload() {
-        return "/upload";
+        return "upload";
     }
 
     @GetMapping("/article/link")
@@ -78,7 +78,7 @@ public class UserCommController {
         request.setImages(images);
         request.setArticles(articles);
         model.addAttribute("link", request);
-        return "/link-images-articles";
+        return "link-images-articles";
     }
 
     @GetMapping("/check-images")
@@ -94,7 +94,7 @@ public class UserCommController {
         request.setArticles(articles);
 
         model.addAttribute("link", request);
-        return "/check-images";
+        return "check-images";
     }
 
     @PostMapping("/upload")
@@ -114,17 +114,17 @@ public class UserCommController {
 
     @GetMapping("/about")
     public String about() {
-        return "/about";
+        return "about";
     }
 
     @GetMapping("/login")
     public String login() {
-        return "/login";
+        return "login";
     }
 
     @GetMapping("/403")
     public String error403() {
-        return "/error/403";
+        return "error/403";
     }
 
     @GetMapping("/principal")
