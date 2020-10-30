@@ -40,7 +40,7 @@ public class UserCommController {
 
     @GetMapping("/")
     public String home1() {
-        return "/home";
+        return "home";
     }
 
     @GetMapping("/home")

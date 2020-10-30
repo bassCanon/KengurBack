@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ba.com.kengur.error.EntityNotFound;
@@ -31,7 +30,6 @@ import ba.com.kengur.util.ResponseConverter;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/article")
 @AllArgsConstructor
 public class ArticleController {
 
@@ -52,7 +50,7 @@ public class ArticleController {
         return articleMapper.entitestoDtos(repository.findAll());
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/create/article", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ArticleEntity createNewArticle(@ModelAttribute(value = "article") ArticleUploadRequest newArticle, final Principal principal,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         UserEntity user = userRepository.findByUsername(principal.getName());
@@ -68,20 +66,20 @@ public class ArticleController {
     }
 
     // Find
-    @GetMapping("{id}")
+    @GetMapping("/article/{id}")
     public Article findOne(@PathVariable Long id) {
         return articleMapper.entitytoDto(repository.findById(id).orElseThrow(() -> new EntityNotFound(id)));
     }
 
     // Save or update
-    @PutMapping("{id}")
+    @PutMapping("/article/{id}")
     public Article saveOrUpdate(@RequestBody ArticleEntity newArticle, @PathVariable Long id) {
         return articleMapper.entitytoDto(newArticle);
 
     }
 
     // Save or update
-    @PostMapping(value = "link", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/create/article/link", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String linkImagesToArticle(final Principal principal, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
         List<Image> selectedImages = new ArrayList<>();
@@ -108,17 +106,18 @@ public class ArticleController {
     }
 
     // update author only
-    @PatchMapping("{id}")
+    @PatchMapping("/article/{id}")
     public ArticleEntity patch(@RequestBody Map<String, String> update, @PathVariable Long id) {
         return null;
 
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/article/{id}")
     public void deleteBook(@PathVariable Long id) {
         repository.deleteById(id);
     }
 
+    @GetMapping("/article/all")
     public List<Article> getAll() {
         return articleMapper.entitestoDtos(repository.findAll());
     }
