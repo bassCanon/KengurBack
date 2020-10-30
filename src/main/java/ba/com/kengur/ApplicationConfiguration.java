@@ -9,7 +9,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -35,14 +34,6 @@ public class ApplicationConfiguration {
         driverManagerDataSource.setUsername(dbUsername);
         driverManagerDataSource.setPassword(dbPassword);
         return driverManagerDataSource;
-    }
-
-    @Bean
-    public InternalResourceViewResolver viewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/static/templates/");
-        resolver.setSuffix(".ftl");
-        return resolver;
     }
 
     @Bean
