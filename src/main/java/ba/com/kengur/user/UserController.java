@@ -30,7 +30,7 @@ public class UserController {
 
     // Find
     @GetMapping("/users")
-    List<User> findAll() {
+    public List<User> findAll() {
         return userMapper.entitestoDtos(repository.findAll());
     }
 
@@ -38,7 +38,7 @@ public class UserController {
     @PostMapping("/users")
     // return 201 instead of 200
     @ResponseStatus(HttpStatus.CREATED)
-    UserEntity createNewUser(@RequestBody User newUser) {
+    public UserEntity createNewUser(@RequestBody User newUser) {
         UserEntity userEnt = userMapper.dtoToEntity(newUser);
         userEnt.setPassword(passEncoder.encode(newUser.getPassword()));
         return repository.save(userEnt);
@@ -46,26 +46,26 @@ public class UserController {
 
     // Find
     @GetMapping("/users/{id}")
-    UserEntity findOne(@PathVariable Long id) {
+    public UserEntity findOne(@PathVariable Long id) {
         return repository.findById(id).orElseThrow(() -> new EntityNotFound(id));
     }
 
     // Save or update
     @PutMapping("/users/{id}")
-    UserEntity saveOrUpdate(@RequestBody UserEntity newUser, @PathVariable Long id) {
+    public UserEntity saveOrUpdate(@RequestBody UserEntity newUser, @PathVariable Long id) {
         return newUser;
 
     }
 
     // update author only
     @PatchMapping("/users/{id}")
-    UserEntity patch(@RequestBody Map<String, String> update, @PathVariable Long id) {
+    public UserEntity patch(@RequestBody Map<String, String> update, @PathVariable Long id) {
         return null;
 
     }
 
     @DeleteMapping("/users/{id}")
-    void deleteBook(@PathVariable Long id) {
+    public void deleteBook(@PathVariable Long id) {
         repository.deleteById(id);
     }
 

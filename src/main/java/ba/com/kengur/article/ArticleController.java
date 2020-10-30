@@ -53,7 +53,7 @@ public class ArticleController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    ArticleEntity createNewArticle(@ModelAttribute(value = "article") ArticleUploadRequest newArticle, final Principal principal,
+    public ArticleEntity createNewArticle(@ModelAttribute(value = "article") ArticleUploadRequest newArticle, final Principal principal,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         UserEntity user = userRepository.findByUsername(principal.getName());
         newArticle.setUserId(user.getId());
@@ -69,20 +69,20 @@ public class ArticleController {
 
     // Find
     @GetMapping("{id}")
-    Article findOne(@PathVariable Long id) {
+    public Article findOne(@PathVariable Long id) {
         return articleMapper.entitytoDto(repository.findById(id).orElseThrow(() -> new EntityNotFound(id)));
     }
 
     // Save or update
     @PutMapping("{id}")
-    Article saveOrUpdate(@RequestBody ArticleEntity newArticle, @PathVariable Long id) {
+    public Article saveOrUpdate(@RequestBody ArticleEntity newArticle, @PathVariable Long id) {
         return articleMapper.entitytoDto(newArticle);
 
     }
 
     // Save or update
     @PostMapping(value = "link", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    String linkImagesToArticle(final Principal principal, final HttpServletRequest request, final HttpServletResponse response)
+    public String linkImagesToArticle(final Principal principal, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
         List<Image> selectedImages = new ArrayList<>();
         String[] s = request.getParameterValues("selectedImages");
@@ -109,13 +109,13 @@ public class ArticleController {
 
     // update author only
     @PatchMapping("{id}")
-    ArticleEntity patch(@RequestBody Map<String, String> update, @PathVariable Long id) {
+    public ArticleEntity patch(@RequestBody Map<String, String> update, @PathVariable Long id) {
         return null;
 
     }
 
     @DeleteMapping("{id}")
-    void deleteBook(@PathVariable Long id) {
+    public void deleteBook(@PathVariable Long id) {
         repository.deleteById(id);
     }
 

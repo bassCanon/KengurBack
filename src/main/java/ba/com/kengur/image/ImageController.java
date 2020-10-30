@@ -59,24 +59,24 @@ public class ImageController {
     }
 
     @GetMapping("{id}")
-    Image findOne(@PathVariable Long id) {
+    public Image findOne(@PathVariable Long id) {
         return imageMapper.entitytoDto(repository.findById(id).orElseThrow(() -> new EntityNotFound(id)));
     }
 
     @PutMapping("{id}")
-    Image saveOrUpdate(@RequestBody ImageEntity newImage, @PathVariable Long id) {
+    public Image saveOrUpdate(@RequestBody ImageEntity newImage, @PathVariable Long id) {
         return imageMapper.entitytoDto(newImage);
 
     }
 
     @PatchMapping("{id}")
-    Image patch(@RequestBody Map<String, String> update, @PathVariable Long id) {
+    public Image patch(@RequestBody Map<String, String> update, @PathVariable Long id) {
         return null;
 
     }
 
     @DeleteMapping("{id}")
-    void deleteBook(@PathVariable Long id) {
+    public void deleteBook(@PathVariable Long id) {
         repository.deleteById(id);
     }
 
