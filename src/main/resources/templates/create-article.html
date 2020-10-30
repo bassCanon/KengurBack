@@ -14,7 +14,7 @@
 		<div class="container">
 		<div class="starter-template">
 		<h1>Nova vijest</h1>
-		<form th:action="@{/article}" method="post" th:object="${article}">
+		<form th:action="@{/create/article}" method="post" th:object="${article}">
 					<div class="form-group">
 			<label for="articleTitle">Naslov</label>
 			<input type="text" class="form-control" id="title" th:field="*{title}" aria-describedby="emailHelp" placeholder="Unesite naslov">
