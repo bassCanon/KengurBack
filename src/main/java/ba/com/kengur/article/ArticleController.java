@@ -57,11 +57,13 @@ public class ArticleController {
         newArticle.setUserId(user.getId());
         newArticle.setContentBit(newArticle.getContent().substring(0, 50));
         ArticleEntity art = repository.save(articleMapper.dtoToEntity(newArticle));
-        Image image = new Image();
-        image.setArticleId(art.getId());
-        image.setImageData(Base64.getEncoder().encodeToString(newArticle.getImageData().getBytes()));
-        image.setTitle(art.getTitle());
-        imageController.createNewImage(image);
+        if (newArticle.getImageData() != null) {
+            Image image = new Image();
+            image.setArticleId(art.getId());
+            image.setImageData(Base64.getEncoder().encodeToString(newArticle.getImageData().getBytes()));
+            image.setTitle(art.getTitle());
+            imageController.createNewImage(image);
+        }
         return art;
     }
 
