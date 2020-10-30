@@ -22,9 +22,12 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     MyAccessDeniedHandler accessDeniedHandler;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource);
+        auth.jdbcAuthentication().passwordEncoder(passwordEncoder).dataSource(dataSource);
     }
 
     @Override
